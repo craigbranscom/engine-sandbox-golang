@@ -1,36 +1,20 @@
 package nodes
 
-type Position2D struct {
-	xPos float64
-	yPos float64
-}
+import (
+	components "github.com/Dappetizer/engine-sandbox-golang/engine/nodes/components"
+)
 
 type Node2D struct {
 	BaseNode
-	Position2D
+	components.Position2D
 }
 
 func NewNode2D(name string, parent Node, xPos float64, yPos float64) *Node2D {
 	baseNode := NewBaseNode(name, parent)
+	position2d := components.NewPosition2DComponent()
 
 	return &Node2D{
-		BaseNode: *baseNode,
-		Position2D: Position2D{
-			xPos: xPos,
-			yPos: yPos,
-		},
+		BaseNode:   *baseNode,
+		Position2D: *position2d,
 	}
-}
-
-func (node *Position2D) XPos() float64 {
-	return node.xPos
-}
-
-func (node *Position2D) YPos() float64 {
-	return node.yPos
-}
-
-func (node *Position2D) SetPosition2D(xPos float64, yPos float64) {
-	node.xPos = xPos
-	node.yPos = yPos
 }
