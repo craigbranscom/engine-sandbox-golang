@@ -1,13 +1,13 @@
 package nodes
 
 type Position2D struct {
-	x int64
-	y int64
+	xPos float64
+	yPos float64
 }
 
 // type INode2D interface {
-// 	X()
-// 	Y()
+// 	XPos()
+// 	YPos()
 // 	SetPosition2D(x int64, y int64)
 // }
 
@@ -16,27 +16,27 @@ type Node2D struct {
 	Position2D
 }
 
-func NewNode2D(name string, parent Node) *Node2D {
+func NewNode2D(name string, parent Node, xPos float64, yPos float64) *Node2D {
 	baseNode := NewBaseNode(name, parent)
 
 	return &Node2D{
 		BaseNode: *baseNode,
 		Position2D: Position2D{
-			x: 0,
-			y: 0,
+			xPos: xPos,
+			yPos: yPos,
 		},
 	}
 }
 
-func (node *Position2D) X() int64 {
-	return node.x
+func (node *Position2D) XPos() float64 {
+	return node.xPos
 }
 
-func (node *Position2D) Y() int64 {
-	return node.y
+func (node *Position2D) YPos() float64 {
+	return node.yPos
 }
 
-func (node *Position2D) SetPosition2D(x int64, y int64) {
-	node.x = x
-	node.y = y
+func (node *Position2D) SetPosition2D(xPos float64, yPos float64) {
+	node.xPos = xPos
+	node.yPos = yPos
 }

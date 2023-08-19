@@ -1,0 +1,14 @@
+- type: BaseNode
+  name: Root
+  children:
+    - type: Node2D
+      name: Sub2D
+      xPos: "10.0"
+      yPos: "5.0"
+      children: []
+    - type: Node3D
+      name: Sub3D
+      xPos: "4.5"
+      yPos: "9.9"
+      zPos: "11.0"
+      children: []

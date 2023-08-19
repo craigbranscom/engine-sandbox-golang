@@ -10,7 +10,7 @@ type Node interface {
 	Parent() Node
 	Children() []Node
 
-	RegisterChild(childNode Node)
+	AppendChild(childNode Node)
 }
 
 type BaseNode struct {
@@ -33,7 +33,7 @@ func NewBaseNode(name string, parent Node) *BaseNode {
 
 	if parent != nil {
 		//register new child on parent node
-		parent.RegisterChild(baseNode)
+		parent.AppendChild(baseNode)
 	}
 
 	return baseNode
@@ -55,7 +55,7 @@ func (node *BaseNode) Children() []Node {
 	return node.children
 }
 
-func (node *BaseNode) RegisterChild(childNode Node) {
+func (node *BaseNode) AppendChild(childNode Node) {
 	//TODO: validate against duplicate children
 	//TODO: validate not circular parent-child relationship
 
