@@ -1,10 +1,7 @@
 package engine
 
 import (
-	"log"
-	"strconv"
-
-	nodes "github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
+	importer "github.com/Dappetizer/engine-sandbox-golang/engine/importer"
 )
 
 type Engine struct {
@@ -25,68 +22,7 @@ func (engine *Engine) Tree() *NodeTree {
 
 func (engine *Engine) BuildNodeTreeFromYaml(data []map[interface{}]interface{}) {
 	//recursively build node tree
-	rootNode := engine.BuildNodeFromYaml(data[0])
+	rootNode := importer.BuildNodeFromYaml(data[0])
 	//set root node
 	engine.Tree().SetRootNode(rootNode)
-}
-
-func (engine *Engine) BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
-	//TODO: implement parent assignment
-
-	// var node nodes.Node
-	// children := data["children"].([]interface{})
-	// for _, childData := range children {
-	// 	child := engine.BuildNodeFromYaml(childData.(map[interface{}]interface{}))
-	// 	node.AppendChild(child)
-	// }
-
-	switch data["type"] {
-	case "BaseNode":
-		node := nodes.NewBaseNode(data["name"].(string), nil)
-		children := data["children"].([]interface{})
-		for _, childData := range children {
-			child := engine.BuildNodeFromYaml(childData.(map[interface{}]interface{}))
-			node.AppendChild(child)
-		}
-		return node
-	case "Node2D":
-		xPos, xErr := strconv.ParseFloat(data["xPos"].(string), 64)
-		if xErr != nil {
-			log.Fatalf("Error parsing x value: %v", xErr)
-		}
-		yPos, yErr := strconv.ParseFloat(data["yPos"].(string), 64)
-		if yErr != nil {
-			log.Fatalf("Error parsing y value: %v", yErr)
-		}
-		node := nodes.NewNode2D(data["name"].(string), nil, xPos, yPos)
-		children := data["children"].([]interface{})
-		for _, childData := range children {
-			child := engine.BuildNodeFromYaml(childData.(map[interface{}]interface{}))
-			node.AppendChild(child)
-		}
-		return node
-	case "Node3D":
-		xPos, xErr := strconv.ParseFloat(data["xPos"].(string), 64)
-		if xErr != nil {
-			log.Fatalf("Error parsing x value: %v", xErr)
-		}
-		yPos, yErr := strconv.ParseFloat(data["yPos"].(string), 64)
-		if yErr != nil {
-			log.Fatalf("Error parsing y value: %v", yErr)
-		}
-		zPos, zErr := strconv.ParseFloat(data["zPos"].(string), 64)
-		if zErr != nil {
-			log.Fatalf("Error parsing z value: %v", zErr)
-		}
-		node := nodes.NewNode3D(data["name"].(string), nil, xPos, yPos, zPos)
-		children := data["children"].([]interface{})
-		for _, childData := range children {
-			child := engine.BuildNodeFromYaml(childData.(map[interface{}]interface{}))
-			node.AppendChild(child)
-		}
-		return node
-	default:
-		log.Fatalf("Unknown node type: %s", data["type"])
-		return nil
-	}
 }

@@ -37,14 +37,9 @@ func main() {
 	if err != nil {
 		log.Fatal("Error creating new engine", err)
 	}
-	_ = eng
+
+	//build node tree from yaml file
 	eng.BuildNodeTreeFromYaml(nodeTreeYaml)
-	//create root node
-	// root := nodes.NewBaseNode("Root", nil)
-	// if err != nil {
-	// 	log.Fatal("Error creating node", err)
-	// }
-	// eng.Tree().SetRootNode(root)
 
 	//print node tree
 	eng.Tree().PrintNodeTree(eng.Tree().RootNode(), 0)
