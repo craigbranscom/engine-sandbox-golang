@@ -6,13 +6,6 @@ type Position3D struct {
 	zPos float64
 }
 
-// type INode3D interface {
-// 	XPos()
-// 	YPos()
-//  ZPos()
-// 	SetPosition3D(xPos int64, yPos int64, zPos int64)
-// }
-
 type Node3D struct {
 	BaseNode
 	Position3D

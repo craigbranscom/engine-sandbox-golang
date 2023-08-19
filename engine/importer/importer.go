@@ -4,7 +4,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
+	nodes "github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
 )
 
 func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {

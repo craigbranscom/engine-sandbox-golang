@@ -5,12 +5,6 @@ type Position2D struct {
 	yPos float64
 }
 
-// type INode2D interface {
-// 	XPos()
-// 	YPos()
-// 	SetPosition2D(x int64, y int64)
-// }
-
 type Node2D struct {
 	BaseNode
 	Position2D
