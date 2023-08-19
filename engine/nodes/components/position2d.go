@@ -12,6 +12,13 @@ func NewPosition2DComponent() *Position2D {
 	}
 }
 
+func BuildPosition2DComponent(xPos float64, yPos float64) *Position2D {
+	return &Position2D{
+		xPos: xPos,
+		yPos: yPos,
+	}
+}
+
 func (node *Position2D) XPos() float64 {
 	return node.xPos
 }

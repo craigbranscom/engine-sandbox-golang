@@ -10,6 +10,7 @@ type Node interface {
 	Parent() Node
 	Children() []Node
 
+	SetName(name string)
 	AppendChild(childNode Node)
 }
 
@@ -20,16 +21,21 @@ type BaseNode struct {
 	children []Node
 }
 
-func NewBaseNode(name string, parent Node) *BaseNode {
+func NewBaseNode() *BaseNode {
 	//generate unique node id
 	nodeId := uuid.New()
 
-	baseNode := &BaseNode{
+	return &BaseNode{
 		id:       nodeId,
-		name:     name,
-		parent:   parent,
+		name:     "",
+		parent:   nil,
 		children: nil,
 	}
+}
+
+func BuildBaseNode(name string, parent Node) *BaseNode {
+	baseNode := NewBaseNode()
+	baseNode.SetName(name)
 
 	if parent != nil {
 		//register new child on parent node
@@ -55,9 +61,10 @@ func (node *BaseNode) Children() []Node {
 	return node.children
 }
 
-func (node *BaseNode) AppendChild(childNode Node) {
-	//TODO: validate against duplicate children
-	//TODO: validate not circular parent-child relationship
+func (node *BaseNode) SetName(name string) {
+	node.name = name
+}
 
+func (node *BaseNode) AppendChild(childNode Node) {
 	node.children = append(node.Children(), childNode)
 }

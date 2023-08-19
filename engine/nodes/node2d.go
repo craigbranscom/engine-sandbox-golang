@@ -9,12 +9,19 @@ type Node2D struct {
 	components.Position2D
 }
 
-func NewNode2D(name string, parent Node, xPos float64, yPos float64) *Node2D {
-	baseNode := NewBaseNode(name, parent)
+func NewNode2D() *Node2D {
+	baseNode := NewBaseNode()
 	position2d := components.NewPosition2DComponent()
 
 	return &Node2D{
 		BaseNode:   *baseNode,
 		Position2D: *position2d,
+	}
+}
+
+func BuildNode2D(baseNode BaseNode, position2d components.Position2D) *Node2D {
+	return &Node2D{
+		BaseNode:   baseNode,
+		Position2D: position2d,
 	}
 }
