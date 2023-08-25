@@ -1,4 +1,4 @@
-package position2d
+package components
 
 type Position2D struct {
 	xPos float64
