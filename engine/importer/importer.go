@@ -2,10 +2,11 @@ package importer
 
 import (
 	"log"
+	"os"
 	"strconv"
 
+	components "github.com/Dappetizer/engine-sandbox-golang/engine/components"
 	nodes "github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
-	components "github.com/Dappetizer/engine-sandbox-golang/engine/nodes/components"
 )
 
 func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
@@ -62,4 +63,12 @@ func BuildPosition2DComponentFromYaml(data map[interface{}]interface{}) *compone
 		log.Fatalf("Error parsing y value: %v", yErr)
 	}
 	return components.BuildPosition2DComponent(xPos, yPos)
+}
+
+func LoadShaderSourceFromFile(filename string) (string, error) {
+	shaderSource, err := os.ReadFile(filename)
+	if err != nil {
+		return "", err
+	}
+	return string(shaderSource), nil
 }

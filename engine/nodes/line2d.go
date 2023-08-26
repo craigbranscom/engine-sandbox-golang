@@ -1,7 +1,7 @@
 package nodes
 
 import (
-	components "github.com/Dappetizer/engine-sandbox-golang/engine/nodes/components"
+	components "github.com/Dappetizer/engine-sandbox-golang/engine/components"
 )
 
 type Line2D struct {
