@@ -1,21 +1,19 @@
 - type: BaseNode
   name: "Root"
   children:
-    - type: Node2D
-      name: "Player"
+    - type: Triangle3D
+      name: "Triangle"
       xPos: "1.0"
       yPos: "2.0"
-      children: []
-    - type: Line2D
-      name: "Example Line"
-      xPos: "3.0"
-      yPos: "4.0"
-      points:
-        - xPos: "99.0"
-          yPos: "98.0"
-        - xPos: "97.0"
-          yPos: "96.0"
-        - xPos: "95.0"
-          yPos: "94.0"
-      width: "3"
+      zPos: "0.0"
+      vertexPositions:
+        - xPos: "-0.3"
+          yPos: "-0.3"
+          zPos: "0.0"
+        - xPos: "0.3"
+          yPos: "-0.3"
+          zPos: "0.0"
+        - xPos: "0.0"
+          yPos: "0.5"
+          zPos: "0.0"
       children: []

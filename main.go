@@ -10,6 +10,9 @@ import (
 	"github.com/Dappetizer/engine-sandbox-golang/engine/importer"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
+
+	// "github.com/go-gl/mathgl/mgl32"
+
 	"github.com/go-yaml/yaml"
 	"github.com/joho/godotenv"
 	// _ "github.com/lib/pq"
@@ -125,11 +128,7 @@ func main() {
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 3*4, gl.PtrOffset(0))
 	gl.EnableVertexAttribArray(0)
 
-	log.Println("Engine startup complete")
-
-	log.Println("Starting render loop")
-
-	var cameraXPos, cameraYPos float32 = 0.0, 0.0
+	var cameraXPos, cameraYPos, cameraZPos float32 = 0.0, 0.0, 0.0
 	var rotationX, rotationY, rotationZ float32 = 0.0, 0.0, 0.0
 
 	//render loop
@@ -145,11 +144,17 @@ func main() {
 		if window.GetKey(glfw.KeyS) == glfw.Press {
 			cameraYPos -= 0.01
 		}
+		if window.GetKey(glfw.KeyD) == glfw.Press {
+			cameraXPos += 0.01
+		}
 		if window.GetKey(glfw.KeyA) == glfw.Press {
 			cameraXPos -= 0.01
 		}
+		if window.GetKey(glfw.KeyQ) == glfw.Press {
+			cameraZPos += 0.01
+		}
 		if window.GetKey(glfw.KeyD) == glfw.Press {
-			cameraXPos += 0.01
+			cameraZPos -= 0.01
 		}
 
 		if window.GetKey(glfw.KeyU) == glfw.Press {
@@ -172,15 +177,11 @@ func main() {
 		}
 
 		//update uniforms
-		rotationUniformX := gl.GetUniformLocation(program, gl.Str("rotationX\x00"))
-		rotationUniformY := gl.GetUniformLocation(program, gl.Str("rotationY\x00"))
-		rotationUniformZ := gl.GetUniformLocation(program, gl.Str("rotationZ\x00"))
-		gl.Uniform1f(rotationUniformX, rotationX)
-		gl.Uniform1f(rotationUniformY, rotationY)
-		gl.Uniform1f(rotationUniformZ, rotationZ)
-
 		cameraUniform := gl.GetUniformLocation(program, gl.Str("camera\x00"))
-		gl.Uniform2f(cameraUniform, cameraXPos, cameraYPos)
+		gl.Uniform3f(cameraUniform, cameraXPos, cameraYPos, cameraZPos)
+
+		rotationUniform := gl.GetUniformLocation(program, gl.Str("rotation\x00"))
+		gl.Uniform3f(rotationUniform, rotationX, rotationY, rotationZ)
 
 		//select shader program
 		gl.UseProgram(program)

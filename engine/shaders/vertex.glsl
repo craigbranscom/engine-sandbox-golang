@@ -1,9 +1,17 @@
 #version 410 core
 layout (location = 0) in vec3 aPos;
-uniform vec2 camera;
-uniform float rotationX;
-uniform float rotationY;
-uniform float rotationZ;
+// layout (location = 1) in vec3 aNormal;
+
+uniform vec3 camera;
+uniform vec3 rotation;
+
+// uniform mat4 model;
+// uniform mat4 view;
+// uniform mat4 projection;
+
+// out vec3 FragPos;
+// out vec3 Normal;
+
 mat4 rotateX(float angle) {
     float c = cos(angle);
     float s = sin(angle);
@@ -34,9 +42,10 @@ mat4 rotateZ(float angle) {
         0.0, 0.0, 0.0, 1.0
     );
 }
+
 void main()
 {
-    mat4 rotationMat = rotateX(rotationX) * rotateY(rotationY) * rotateZ(rotationZ);
+    mat4 rotationMat = rotateX(rotation.x) * rotateY(rotation.y) * rotateZ(rotation.z);
     vec4 rotatedPos = rotationMat * vec4(aPos, 1.0);
     gl_Position = vec4(rotatedPos.x - camera.x, rotatedPos.y - camera.y, rotatedPos.z, 1.0);
 }

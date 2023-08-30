@@ -9,6 +9,8 @@ import (
 	nodes "github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
 )
 
+//nodes
+
 func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
 	//TODO: get parent data
 	switch data["type"] {
@@ -39,6 +41,19 @@ func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
 		node := nodes.BuildLine2D(*node2d, points, uint(width))
 		BuildNodeChildrenFromYaml(node, data)
 		return node
+	case "Triangle3D":
+		baseNode := nodes.BuildBaseNode(data["name"].(string), nil)
+		pos3DComponent := BuildPosition3DComponentFromYaml(data)
+		node3d := nodes.BuildNode3D(*baseNode, *pos3DComponent)
+		verticesIfaceSlice := data["vertexPositions"].([]interface{})
+		var vertices []components.Position3D
+		for _, verticesIface := range verticesIfaceSlice {
+			vertex := BuildPosition3DComponentFromYaml(verticesIface.(map[interface{}]interface{}))
+			vertices = append(vertices, *vertex)
+		}
+		node := nodes.BuildTriangle3D(*node3d, vertices)
+		BuildNodeChildrenFromYaml(node, data)
+		return node
 	default:
 		log.Fatalf("Unknown node type: %s", data["type"])
 		return nil
@@ -53,17 +68,37 @@ func BuildNodeChildrenFromYaml(node nodes.Node, data map[interface{}]interface{}
 	}
 }
 
+//components
+
 func BuildPosition2DComponentFromYaml(data map[interface{}]interface{}) *components.Position2D {
-	xPos, xErr := strconv.ParseFloat(data["xPos"].(string), 64)
+	xPos, xErr := strconv.ParseFloat(data["xPos"].(string), 32)
 	if xErr != nil {
 		log.Fatalf("Error parsing x value: %v", xErr)
 	}
-	yPos, yErr := strconv.ParseFloat(data["yPos"].(string), 64)
+	yPos, yErr := strconv.ParseFloat(data["yPos"].(string), 32)
 	if yErr != nil {
 		log.Fatalf("Error parsing y value: %v", yErr)
 	}
-	return components.BuildPosition2DComponent(xPos, yPos)
+	return components.BuildPosition2DComponent(float32(xPos), float32(yPos))
 }
+
+func BuildPosition3DComponentFromYaml(data map[interface{}]interface{}) *components.Position3D {
+	xPos, xErr := strconv.ParseFloat(data["xPos"].(string), 32)
+	if xErr != nil {
+		log.Fatalf("Error parsing x value: %v", xErr)
+	}
+	yPos, yErr := strconv.ParseFloat(data["yPos"].(string), 32)
+	if yErr != nil {
+		log.Fatalf("Error parsing y value: %v", yErr)
+	}
+	zPos, zErr := strconv.ParseFloat(data["zPos"].(string), 32)
+	if zErr != nil {
+		log.Fatalf("Error parsing z value: %v", zErr)
+	}
+	return components.BuildPosition3DComponent(float32(xPos), float32(yPos), float32(zPos))
+}
+
+//shaders
 
 func LoadShaderSourceFromFile(filename string) (string, error) {
 	shaderSource, err := os.ReadFile(filename)
