@@ -54,3 +54,22 @@ func (tree *NodeTree) PrintNodeTree(node nodes.Node, indent int) {
 		tree.PrintNodeTree(child, indent+1)
 	}
 }
+
+func (tree *NodeTree) GetVertexPositionData(node nodes.Node) []float32 {
+	var vertices []float32
+
+	//TODO: switch on node type
+	if node.Name() == "Triangle" {
+		triangle := node.(*nodes.Triangle3D)
+		pos := triangle.VertexPositions()
+		floatArr := []float32{pos[0].XPos(), pos[0].YPos(), pos[0].ZPos(), pos[1].XPos(), pos[1].YPos(), pos[1].ZPos(), pos[2].XPos(), pos[2].YPos(), pos[2].ZPos()}
+		vertices = append(floatArr)
+	}
+
+	children := node.Children()
+	for _, child := range children {
+		vertices = append(tree.GetVertexPositionData(child))
+	}
+
+	return vertices
+}

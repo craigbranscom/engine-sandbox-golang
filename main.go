@@ -22,12 +22,6 @@ import (
 const WINDOW_HEIGHT = 600
 const WINDOW_WIDTH = 800
 
-var vertices = []float32{
-	-0.3, -0.3, 0.0,
-	0.3, -0.3, 0.0,
-	0.0, 0.5, 0.0,
-}
-
 func main() {
 	//lock thread
 	runtime.LockOSThread()
@@ -115,16 +109,23 @@ func main() {
 	}
 	defer gl.DeleteProgram(program)
 
-	//create and bind vertex array and buffer objs
-	var vao, vbo uint32
-	gl.GenVertexArrays(1, &vao)
-	gl.GenBuffers(1, &vbo)
+	//declare and generate vertex arrays and vertex buffer objs
+	var vertexArrayObject, vertexBufferOject uint32
+	gl.GenVertexArrays(1, &vertexArrayObject)
+	gl.GenBuffers(1, &vertexBufferOject)
 
-	gl.BindVertexArray(vao)
-	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
+	//bind vertex array and vertex buffer objs
+	gl.BindVertexArray(vertexArrayObject)
+	gl.BindBuffer(gl.ARRAY_BUFFER, vertexBufferOject)
+
+	//get aggregate vertex position data from node tree
+	vertices := eng.Tree().GetVertexPositionData(eng.Tree().RootNode())
+
+	//push vertices into array buffer
+	// gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
 	gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
 
-	//configure vertex attributes
+	//configure and enable vertex attributes
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 3*4, gl.PtrOffset(0))
 	gl.EnableVertexAttribArray(0)
 
@@ -187,7 +188,7 @@ func main() {
 		gl.UseProgram(program)
 
 		//bind and draw
-		gl.BindVertexArray(vao)
+		gl.BindVertexArray(vertexArrayObject)
 		gl.DrawArrays(gl.TRIANGLES, 0, 3)
 		gl.BindVertexArray(0)
 
