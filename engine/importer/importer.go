@@ -12,7 +12,7 @@ import (
 //nodes
 
 func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
-	//TODO: get parent data
+	//TODO: use reflection and fallthrough to build nodes
 	switch data["type"] {
 	case "BaseNode":
 		node := nodes.BuildBaseNode(data["name"].(string), nil)
@@ -61,6 +61,9 @@ func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
 }
 
 func BuildNodeChildrenFromYaml(node nodes.Node, data map[interface{}]interface{}) {
+	if data["children"] == nil {
+		return
+	}
 	children := data["children"].([]interface{})
 	for _, childData := range children {
 		child := BuildNodeFromYaml(childData.(map[interface{}]interface{}))

@@ -24,7 +24,7 @@ const WINDOW_HEIGHT = 600
 const WINDOW_WIDTH = 800
 
 func main() {
-	//lock thread
+	//lock thread since opengl isnt thread-safe
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
