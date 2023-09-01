@@ -26,6 +26,7 @@ const WINDOW_WIDTH = 800
 func main() {
 	//lock thread
 	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
 
 	//load project env
 	err := godotenv.Load("env.yaml")
@@ -134,7 +135,6 @@ func main() {
 	vertices := eng.Tree().GetVertexPositionData(eng.Tree().RootNode())
 
 	//push vertices into array buffer
-	// gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
 	gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
 
 	//configure and enable vertex attributes
@@ -146,6 +146,11 @@ func main() {
 
 	//render loop
 	for !window.ShouldClose() {
+
+		// vertices := eng.Tree().GetVertexPositionData(eng.Tree().RootNode())
+		// gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
+		// gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 3*4, gl.PtrOffset(0))
+		// gl.EnableVertexAttribArray(0)
 
 		//clear frame
 		gl.Clear(gl.COLOR_BUFFER_BIT)
