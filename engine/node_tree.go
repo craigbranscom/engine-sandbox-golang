@@ -2,8 +2,10 @@ package engine
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 
+	"github.com/Dappetizer/engine-sandbox-golang/engine/components"
 	nodes "github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
 )
 
@@ -58,7 +60,10 @@ func (tree *NodeTree) PrintNodeTree(node nodes.Node, indent int) {
 func (tree *NodeTree) GetVertexPositionData(node nodes.Node) []float32 {
 	var vertices []float32
 
-	//TODO: switch on node type
+	//TODO: use reflection to check for components with vertex position data
+	// hasComponent := ContainsComponent(node)
+	// fmt.Println(">>>", hasComponent)
+
 	if node.Name() == "Triangle" {
 		triangle := node.(*nodes.Triangle3D)
 		pos := triangle.VertexPositions()
@@ -72,4 +77,10 @@ func (tree *NodeTree) GetVertexPositionData(node nodes.Node) []float32 {
 	}
 
 	return vertices
+}
+
+func ContainsComponent(obj interface{}) bool {
+	componentType := reflect.TypeOf((*components.Position3DInterface)(nil)).Elem()
+	objectType := reflect.TypeOf(obj)
+	return objectType.Implements(componentType)
 }

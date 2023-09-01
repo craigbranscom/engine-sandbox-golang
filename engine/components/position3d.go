@@ -1,5 +1,11 @@
 package components
 
+type Position3DInterface interface {
+	XPos()
+	YPos()
+	ZPos()
+}
+
 type Position3D struct {
 	xPos float32
 	yPos float32
