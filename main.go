@@ -6,7 +6,6 @@ import (
 	"runtime"
 
 	engine "github.com/Dappetizer/engine-sandbox-golang/engine"
-	"github.com/go-gl/gl/v4.1-core/gl"
 
 	// "github.com/go-gl/mathgl/mgl32"
 
@@ -36,13 +35,6 @@ func main() {
 	unmarshalErr := yaml.Unmarshal(yamlFile, &nodeTreeYaml)
 	if unmarshalErr != nil {
 		log.Fatal("Error unmarshalling yaml", unmarshalErr)
-	}
-
-	//initialize opengl
-	err = gl.Init()
-	if err != nil {
-		log.Fatal("Error initializing OpenGL:", err)
-		return
 	}
 
 	//create engine instance

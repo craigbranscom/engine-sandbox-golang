@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	importer "github.com/Dappetizer/engine-sandbox-golang/engine/importer"
-	"github.com/go-gl/gl/v2.1/gl"
+	"github.com/Dappetizer/engine-sandbox-golang/engine/importer"
+	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -20,10 +20,14 @@ type Engine struct {
 }
 
 func NewEngine() (*Engine, error) {
-	//TODO: initialize OpenGL, create window, and set up key callbacks
+	//initialize opengl
+	err := gl.Init()
+	if err != nil {
+		log.Fatal("Error initializing OpenGL:", err)
+	}
 
 	//initialize glfw
-	err := glfw.Init()
+	err = glfw.Init()
 	if err != nil {
 		log.Fatal("Error initializing glfw:", err)
 	}
@@ -101,6 +105,10 @@ func (engine *Engine) BuildNodeTreeFromYaml(data []map[interface{}]interface{}) 
 }
 
 func (engine *Engine) StartRenderLoop() {
+	//defer cleanup functions in render loop scope
+	defer glfw.Terminate()
+	defer engine.window.Destroy()
+
 	//import and compile shaders
 	program, err := NewCompiledShaderProgram("engine/shaders/vertex.glsl", "engine/shaders/fragment.glsl")
 	if err != nil {
