@@ -114,6 +114,7 @@ func (engine *Engine) StartRenderLoop() {
 	if err != nil {
 		log.Fatal("Error creating compiled shader program:", err)
 	}
+	defer gl.DeleteProgram(program.ProgramId)
 
 	//declare and generate vertex arrays and vertex buffer objs
 	var vertexArrayObject, vertexBufferOject uint32

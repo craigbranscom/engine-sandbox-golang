@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	importer "github.com/Dappetizer/engine-sandbox-golang/engine/importer"
+	"github.com/Dappetizer/engine-sandbox-golang/engine/importer"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
@@ -33,8 +33,6 @@ func NewCompiledShaderProgram(vertexShaderPath string, fragmentShaderPath string
 		log.Fatal("Error creating shader program:", err)
 		return nil, err
 	}
-	//TODO: defer in render loop
-	// defer gl.DeleteProgram(program)
 
 	return &CompiledShaderProgram{
 		ProgramId: program,
