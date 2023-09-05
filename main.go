@@ -5,10 +5,8 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"strconv"
 
 	engine "github.com/Dappetizer/engine-sandbox-golang/engine"
-	"github.com/Dappetizer/engine-sandbox-golang/engine/importer"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 
@@ -19,9 +17,6 @@ import (
 	// _ "github.com/lib/pq"
 	// amqp "github.com/rabbitmq/amqp091-go"
 )
-
-const WINDOW_HEIGHT = 600
-const WINDOW_WIDTH = 800
 
 func main() {
 	//lock thread since opengl isnt thread-safe
@@ -57,43 +52,45 @@ func main() {
 	//print node tree
 	eng.Tree().PrintNodeTree(eng.Tree().RootNode(), 0)
 
+	//TODO: run render loop
+
 	//initialize glfw
-	err = glfw.Init()
-	if err != nil {
-		log.Fatal("Error initializing glfw:", err)
-	}
-	defer glfw.Terminate()
+	// err = glfw.Init()
+	// if err != nil {
+	// 	log.Fatal("Error initializing glfw:", err)
+	// }
+	// defer glfw.Terminate()
 
 	//set glfw options
-	glfw.WindowHint(glfw.ContextVersionMajor, 4)
-	glfw.WindowHint(glfw.ContextVersionMinor, 1)
-	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
-	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
+	// glfw.WindowHint(glfw.ContextVersionMajor, 4)
+	// glfw.WindowHint(glfw.ContextVersionMinor, 1)
+	// glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	// glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
 	//create a window
-	windowWidth := os.Getenv("WINDOW_WIDTH")
-	windowWidthInt, err := strconv.Atoi(windowWidth)
-	if err != nil {
-		log.Fatal("Error converting window width to int", err)
-	}
-	windowHeight := os.Getenv("WINDOW_HEIGHT")
-	windowHeightInt, err := strconv.Atoi(windowHeight)
-	if err != nil {
-		log.Fatal("Error converting window height to int", err)
-	}
-	applicationName := os.Getenv("APPLICATION_NAME")
-	window, err := glfw.CreateWindow(windowWidthInt, windowHeightInt, applicationName, nil, nil)
-	if err != nil {
-		log.Fatal("Error creating glfw window:", err)
-		return
-	}
-	defer window.Destroy()
+	// windowWidth := os.Getenv("WINDOW_WIDTH")
+	// windowWidthInt, err := strconv.Atoi(windowWidth)
+	// if err != nil {
+	// 	log.Fatal("Error converting window width to int", err)
+	// }
+	// windowHeight := os.Getenv("WINDOW_HEIGHT")
+	// windowHeightInt, err := strconv.Atoi(windowHeight)
+	// if err != nil {
+	// 	log.Fatal("Error converting window height to int", err)
+	// }
+	// applicationName := os.Getenv("APPLICATION_NAME")
+	// window, err := glfw.CreateWindow(windowWidthInt, windowHeightInt, applicationName, nil, nil)
+	// if err != nil {
+	// 	log.Fatal("Error creating glfw window:", err)
+	// 	return
+	// }
+	// defer window.Destroy()
 
 	//configure window
-	window.SetKeyCallback(keyCallback)
+	// window.SetKeyCallback(keyCallback)
 
 	//set context
-	window.MakeContextCurrent()
+	// window.MakeContextCurrent()
 
 	//initialize opengl functions
 	err = gl.Init()
@@ -102,25 +99,30 @@ func main() {
 		return
 	}
 
-	//load shaders from file
-	vertexShaderSource, err := importer.LoadShaderSourceFromFile("engine/shaders/vertex.glsl")
+	program, err := engine.NewCompiledShaderProgram("engine/shaders/vertex.glsl", "engine/shaders/fragment.glsl")
 	if err != nil {
-		log.Fatal("Error loading vertex shader from file:", err)
-		return
-	}
-	fragmentShaderSource, err := importer.LoadShaderSourceFromFile("engine/shaders/fragment.glsl")
-	if err != nil {
-		log.Fatal("Error loading fragment shader from file:", err)
-		return
+		log.Fatal("Error creating compiled shader program:", err)
 	}
 
+	//load shaders from file
+	// vertexShaderSource, err := importer.LoadShaderSourceFromFile("engine/shaders/vertex.glsl")
+	// if err != nil {
+	// 	log.Fatal("Error loading vertex shader from file:", err)
+	// 	return
+	// }
+	// fragmentShaderSource, err := importer.LoadShaderSourceFromFile("engine/shaders/fragment.glsl")
+	// if err != nil {
+	// 	log.Fatal("Error loading fragment shader from file:", err)
+	// 	return
+	// }
+
 	//compile and link shaders
-	program, err := newProgram(vertexShaderSource, fragmentShaderSource)
-	if err != nil {
-		log.Fatal("Error creating shader program:", err)
-		return
-	}
-	defer gl.DeleteProgram(program)
+	// program, err := newProgram(vertexShaderSource, fragmentShaderSource)
+	// if err != nil {
+	// 	log.Fatal("Error creating shader program:", err)
+	// 	return
+	// }
+	// defer gl.DeleteProgram(program)
 
 	//declare and generate vertex arrays and vertex buffer objs
 	var vertexArrayObject, vertexBufferOject uint32
@@ -145,72 +147,72 @@ func main() {
 	var rotationX, rotationY, rotationZ float32 = 0.0, 0.0, 0.0
 
 	//render loop
-	for !window.ShouldClose() {
-
-		// vertices := eng.Tree().GetVertexPositionData(eng.Tree().RootNode())
-		// gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
-		// gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 3*4, gl.PtrOffset(0))
-		// gl.EnableVertexAttribArray(0)
+	for !eng.Window().ShouldClose() {
 
 		//clear frame
 		gl.Clear(gl.COLOR_BUFFER_BIT)
 
 		//check for keyboard input
-		if window.GetKey(glfw.KeyW) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyW) == glfw.Press {
 			cameraYPos += 0.01
 		}
-		if window.GetKey(glfw.KeyS) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyS) == glfw.Press {
 			cameraYPos -= 0.01
 		}
-		if window.GetKey(glfw.KeyD) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyD) == glfw.Press {
 			cameraXPos += 0.01
 		}
-		if window.GetKey(glfw.KeyA) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyA) == glfw.Press {
 			cameraXPos -= 0.01
 		}
-		if window.GetKey(glfw.KeyQ) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyQ) == glfw.Press {
 			cameraZPos += 0.01
 		}
-		if window.GetKey(glfw.KeyD) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyD) == glfw.Press {
 			cameraZPos -= 0.01
 		}
 
-		if window.GetKey(glfw.KeyU) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyU) == glfw.Press {
 			rotationX -= 0.01
 		}
-		if window.GetKey(glfw.KeyI) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyI) == glfw.Press {
 			rotationX += 0.01
 		}
-		if window.GetKey(glfw.KeyJ) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyJ) == glfw.Press {
 			rotationY -= 0.01
 		}
-		if window.GetKey(glfw.KeyK) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyK) == glfw.Press {
 			rotationY += 0.01
 		}
-		if window.GetKey(glfw.KeyN) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyN) == glfw.Press {
 			rotationZ -= 0.01
 		}
-		if window.GetKey(glfw.KeyM) == glfw.Press {
+		if eng.Window().GetKey(glfw.KeyM) == glfw.Press {
 			rotationZ += 0.01
 		}
 
 		//update uniforms
-		cameraUniform := gl.GetUniformLocation(program, gl.Str("camera\x00"))
+		cameraUniform := gl.GetUniformLocation(program.ProgramId, gl.Str("camera\x00"))
 		gl.Uniform3f(cameraUniform, cameraXPos, cameraYPos, cameraZPos)
 
-		rotationUniform := gl.GetUniformLocation(program, gl.Str("rotation\x00"))
+		rotationUniform := gl.GetUniformLocation(program.ProgramId, gl.Str("rotation\x00"))
 		gl.Uniform3f(rotationUniform, rotationX, rotationY, rotationZ)
 
 		//select shader program
-		gl.UseProgram(program)
+		// gl.UseProgram(program.ProgramId)
+		program.UseShaderProgram()
 
 		//bind and draw
 		gl.BindVertexArray(vertexArrayObject)
 		gl.DrawArrays(gl.TRIANGLES, 0, 3)
 		gl.BindVertexArray(0)
 
+		//update profiler
+		eng.Profiler.UpdateProfiler()
+		fmt.Println("FPS:", eng.Profiler.FramesPerSecond())
+
 		//swap buffers and poll events
-		window.SwapBuffers()
+		eng.Window().SwapBuffers()
 		glfw.PollEvents()
 	}
 }
