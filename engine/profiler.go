@@ -5,16 +5,21 @@ import (
 )
 
 type Profiler struct {
-	frameCount      uint32
-	lastFrameTime   float64
-	framesPerSecond float64
+	frameCount            uint32
+	lastFrameTime         float64
+	framesPerSecond       float64
+	targetFrameTime       float64
+	targetFramesPerSecond float64
 }
 
-func NewProfiler() *Profiler {
+func NewProfiler(targetFPS float64) *Profiler {
+	targetFrameTime := 1.0 / targetFPS
 	return &Profiler{
-		frameCount:      0,
-		lastFrameTime:   0.0,
-		framesPerSecond: 0.0,
+		frameCount:            0,
+		lastFrameTime:         0.0,
+		framesPerSecond:       0.0,
+		targetFrameTime:       targetFrameTime,
+		targetFramesPerSecond: targetFPS,
 	}
 }
 
@@ -33,4 +38,8 @@ func (profiler *Profiler) UpdateProfiler() {
 
 func (profiler *Profiler) FramesPerSecond() float64 {
 	return profiler.framesPerSecond
+}
+
+func (profiler *Profiler) TargetFrameTime() float64 {
+	return profiler.targetFrameTime
 }
