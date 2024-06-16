@@ -6,6 +6,7 @@ import (
 	"runtime"
 
 	engine "github.com/craigbranscom/engine-sandbox-golang/engine"
+	"github.com/go-gl/glfw/v3.3/glfw"
 
 	// "github.com/go-gl/mathgl/mgl32"
 
@@ -36,6 +37,13 @@ func main() {
 	if unmarshalErr != nil {
 		log.Fatal("Error unmarshalling yaml", unmarshalErr)
 	}
+
+	//initialize glfw
+	err = glfw.Init()
+	if err != nil {
+		log.Fatal("Error initializing glfw:", err)
+	}
+	defer glfw.Terminate()
 
 	//create engine instance
 	eng, err := engine.NewEngine()

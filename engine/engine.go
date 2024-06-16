@@ -19,18 +19,6 @@ type Engine struct {
 }
 
 func NewEngine() (*Engine, error) {
-	//initialize opengl
-	err := gl.Init()
-	if err != nil {
-		log.Fatal("Error initializing OpenGL:", err)
-	}
-
-	//initialize glfw
-	err = glfw.Init()
-	if err != nil {
-		log.Fatal("Error initializing glfw:", err)
-	}
-
 	//set glfw options
 	glfw.WindowHint(glfw.ContextVersionMajor, 4)
 	glfw.WindowHint(glfw.ContextVersionMinor, 1)
