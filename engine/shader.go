@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Dappetizer/engine-sandbox-golang/engine/importer"
+	"github.com/craigbranscom/engine-sandbox-golang/engine/importer"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 

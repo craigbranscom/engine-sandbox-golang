@@ -5,25 +5,23 @@ import (
 	"os"
 	"strconv"
 
-	components "github.com/Dappetizer/engine-sandbox-golang/engine/components"
-	nodes "github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
+	components "github.com/craigbranscom/engine-sandbox-golang/engine/components"
+	nodes "github.com/craigbranscom/engine-sandbox-golang/engine/nodes"
 )
 
 //nodes
 
 func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
+	var node nodes.Node
+
 	//TODO: use reflection and fallthrough to build nodes
 	switch data["type"] {
 	case "BaseNode":
-		node := nodes.BuildBaseNode(data["name"].(string), nil)
-		BuildNodeChildrenFromYaml(node, data)
-		return node
+		node = nodes.BuildBaseNode(data["name"].(string), nil)
 	case "Node2D":
 		baseNode := nodes.BuildBaseNode(data["name"].(string), nil)
 		pos2DComponent := BuildPosition2DComponentFromYaml(data)
-		node := nodes.BuildNode2D(*baseNode, *pos2DComponent)
-		BuildNodeChildrenFromYaml(node, data)
-		return node
+		node = nodes.BuildNode2D(*baseNode, *pos2DComponent)
 	case "Line2D":
 		baseNode := nodes.BuildBaseNode(data["name"].(string), nil)
 		pos2DComponent := BuildPosition2DComponentFromYaml(data)
@@ -38,9 +36,7 @@ func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
 		if widthErr != nil {
 			log.Fatalf("Error parsing width value: %v", widthErr)
 		}
-		node := nodes.BuildLine2D(*node2d, points, uint(width))
-		BuildNodeChildrenFromYaml(node, data)
-		return node
+		node = nodes.BuildLine2D(*node2d, points, uint(width))
 	case "Triangle3D":
 		baseNode := nodes.BuildBaseNode(data["name"].(string), nil)
 		pos3DComponent := BuildPosition3DComponentFromYaml(data)
@@ -51,13 +47,16 @@ func BuildNodeFromYaml(data map[interface{}]interface{}) nodes.Node {
 			vertex := BuildPosition3DComponentFromYaml(verticesIface.(map[interface{}]interface{}))
 			vertices = append(vertices, *vertex)
 		}
-		node := nodes.BuildTriangle3D(*node3d, vertices)
-		BuildNodeChildrenFromYaml(node, data)
-		return node
+		node = nodes.BuildTriangle3D(*node3d, vertices)
 	default:
 		log.Fatalf("Unknown node type: %s", data["type"])
 		return nil
 	}
+
+	//build node children
+	BuildNodeChildrenFromYaml(node, data)
+
+	return node
 }
 
 func BuildNodeChildrenFromYaml(node nodes.Node, data map[interface{}]interface{}) {

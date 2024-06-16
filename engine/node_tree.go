@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Dappetizer/engine-sandbox-golang/engine/components"
-	nodes "github.com/Dappetizer/engine-sandbox-golang/engine/nodes"
+	"github.com/craigbranscom/engine-sandbox-golang/engine/components"
+	nodes "github.com/craigbranscom/engine-sandbox-golang/engine/nodes"
 )
 
 type NodeTree struct {

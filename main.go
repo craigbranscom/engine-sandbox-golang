@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime"
 
-	engine "github.com/Dappetizer/engine-sandbox-golang/engine"
+	engine "github.com/craigbranscom/engine-sandbox-golang/engine"
 
 	// "github.com/go-gl/mathgl/mgl32"
 

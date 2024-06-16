@@ -1,13 +1,12 @@
 package engine
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"time"
 
-	"github.com/Dappetizer/engine-sandbox-golang/engine/importer"
+	"github.com/craigbranscom/engine-sandbox-golang/engine/importer"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -31,7 +30,6 @@ func NewEngine() (*Engine, error) {
 	if err != nil {
 		log.Fatal("Error initializing glfw:", err)
 	}
-	// defer glfw.Terminate()
 
 	//set glfw options
 	glfw.WindowHint(glfw.ContextVersionMajor, 4)
@@ -56,7 +54,6 @@ func NewEngine() (*Engine, error) {
 		log.Fatal("Error creating glfw window:", err)
 		return nil, err
 	}
-	// defer window.Destroy()
 
 	//configure key callbacks
 	window.SetKeyCallback(keyCallback)
@@ -202,7 +199,7 @@ func (engine *Engine) StartRenderLoop() {
 
 		//update profiler
 		engine.profiler.UpdateProfiler()
-		fmt.Println("FPS:", engine.profiler.FramesPerSecond())
+		// fmt.Println("FPS:", engine.profiler.FramesPerSecond())
 
 		// Render the scene
 		// app.renderer.Render()

@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"github.com/Dappetizer/engine-sandbox-golang/engine/components"
+	"github.com/craigbranscom/engine-sandbox-golang/engine/components"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
